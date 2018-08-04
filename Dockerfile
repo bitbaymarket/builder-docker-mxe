@@ -41,7 +41,7 @@ RUN git clone https://github.com/yshurik/mxe.git
 WORKDIR /mxe
 
 ENV MXE_TARGETS "x86_64-w64-mingw32.shared x86_64-w64-mingw32.static i686-w64-mingw32.shared i686-w64-mingw32.static"
-ENV MXE_PLUGIN_DIRS plugins/gcc8
+ENV MXE_PLUGIN_DIRS plugins/gcc7
 
 RUN make download-gcc
 RUN make MXE_PLUGIN_DIRS="$MXE_PLUGIN_DIRS" MXE_TARGETS="x86_64-w64-mingw32.shared" gcc
