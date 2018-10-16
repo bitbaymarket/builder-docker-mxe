@@ -36,27 +36,32 @@ RUN apt-get -y install \
     wget \
     xz-utils
 WORKDIR /
-RUN echo mark1
+RUN echo mark5
 RUN git clone https://github.com/yshurik/mxe.git
 WORKDIR /mxe
+RUN git checkout base0
 
-ENV MXE_TARGETS "x86_64-w64-mingw32.shared x86_64-w64-mingw32.static i686-w64-mingw32.shared i686-w64-mingw32.static"
+#ENV MXE_TARGETS "x86_64-w64-mingw32.shared x86_64-w64-mingw32.static i686-w64-mingw32.shared i686-w64-mingw32.static x86_64-w64-mingw32.shared.posix x86_64-w64-mingw32.static.posix i686-w64-mingw32.shared.posix i686-w64-mingw32.static.posix"
+ENV MXE_TARGETS "i686-w64-mingw32.static"
 ENV MXE_PLUGIN_DIRS plugins/gcc7
 
 RUN make download-gcc
-RUN make MXE_PLUGIN_DIRS="$MXE_PLUGIN_DIRS" MXE_TARGETS="x86_64-w64-mingw32.shared" gcc
-RUN make MXE_PLUGIN_DIRS="$MXE_PLUGIN_DIRS" MXE_TARGETS="x86_64-w64-mingw32.static" gcc
-RUN make MXE_PLUGIN_DIRS="$MXE_PLUGIN_DIRS" MXE_TARGETS="i686-w64-mingw32.shared" gcc
-RUN make MXE_PLUGIN_DIRS="$MXE_PLUGIN_DIRS" MXE_TARGETS="i686-w64-mingw32.static" gcc
+RUN make MXE_PLUGIN_DIRS="$MXE_PLUGIN_DIRS" MXE_TARGETS="i686-w64-mingw32.static" cc
 RUN make MXE_TARGETS="$MXE_TARGETS" boost
 RUN make MXE_TARGETS="$MXE_TARGETS" cmake
 RUN make MXE_TARGETS="$MXE_TARGETS" freetype
 RUN make MXE_TARGETS="$MXE_TARGETS" fontconfig
 RUN make MXE_TARGETS="$MXE_TARGETS" sqlite
+RUN make MXE_TARGETS="$MXE_TARGETS" jpeg pcre2
+RUN make MXE_TARGETS="$MXE_TARGETS" miniupnpc
+ADD db4.mk /mxe/src/
+RUN make MXE_TARGETS="$MXE_TARGETS" db4
+ADD openssl.mk /mxe/src/
+RUN make MXE_TARGETS="$MXE_TARGETS" openssl
 RUN make MXE_TARGETS="$MXE_TARGETS" freetds
+ADD postgres.mk /mxe/src
 RUN make MXE_TARGETS="$MXE_TARGETS" postgresql
 RUN make MXE_TARGETS="$MXE_TARGETS" libmysqlclient
-RUN make MXE_TARGETS="$MXE_TARGETS" jpeg pcre2
 RUN ls /mxe/usr/bin
 
 
