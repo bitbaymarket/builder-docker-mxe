@@ -34,12 +34,13 @@ RUN apt-get -y install \
     sed \
     unzip \
     wget \
-    xz-utils
+    xz-utils \
+    lzip
 WORKDIR /
-RUN echo mark5
+RUN echo mark10
 RUN git clone https://github.com/yshurik/mxe.git
 WORKDIR /mxe
-RUN git checkout db4
+RUN git checkout db4-2020-12-08
 
 ENV MXE_TARGETS "x86_64-w64-mingw32.shared x86_64-w64-mingw32.static i686-w64-mingw32.shared i686-w64-mingw32.static x86_64-w64-mingw32.shared.posix x86_64-w64-mingw32.static.posix i686-w64-mingw32.shared.posix i686-w64-mingw32.static.posix"
 ENV MXE_PLUGIN_DIRS plugins/gcc10
